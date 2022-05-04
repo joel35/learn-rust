@@ -1,8 +1,9 @@
 mod remove_duplication;
 mod generic_types;
+mod lifetimes;
 
-use generic_types::{Point, Pair};
 use aggregator::{self, NewsArticle, Summary, Tweet};
+
 
 fn main() {
     play_with_remove_dupe();
@@ -10,6 +11,9 @@ fn main() {
     play_with_generic_types();
     println!();
     play_with_traits();
+    println!();
+    println!("*** LIFETIMES ***");
+    play_with_lifetimes();
 }
 
 fn play_with_remove_dupe() {
@@ -25,11 +29,11 @@ fn play_with_remove_dupe() {
 }
 
 fn play_with_generic_types() {
-    let f = Point { x: 5.0, y: 11.1 };
+    let f = generic_types::Point { x: 5.0, y: 11.1 };
     dbg!(f.distance_from_origin());
 
-    let p1 = Point { x: 5, y: 10.4 };
-    let p2 = Point { x: "Hello", y: 'c' };
+    let p1 = generic_types::Point { x: 5, y: 10.4 };
+    let p2 = generic_types::Point { x: "Hello", y: 'c' };
     let p3 = p1.mixup(p2);
     println!("p3.x = {}, p3.y = {}", p3.x, p3.y);
 }
@@ -59,7 +63,7 @@ fn play_with_traits() {
     aggregator::notify(&tweet);
     aggregator::notify(&article);
 
-    let tweet = returns_summarizable();
+    let _tweet = returns_summarizable();
 }
 
 fn returns_summarizable() -> impl Summary {
@@ -73,8 +77,28 @@ fn returns_summarizable() -> impl Summary {
     }
 }
 
-fn play_with_conditionals() {
-    let p =
+fn play_with_lifetimes() {
+    let string1 = String::from("abcd");
+    let string2 = "xyz";
 
-    p.cmp_display()
+    let result = lifetimes::longest(string1.as_str(), string2);
+    println!("The longest string is {}", result);
+
+    // structs
+    let novel = String::from("Call me Ishmael. Some years ago...");
+    let first_sentence = novel.split('.').next().expect("Could not find a '.'");
+    let i = lifetimes::ImportantExcerpt {
+        part: first_sentence,
+    };
+    dbg!(i);
+
+    //
+    let string1 = String::from("abcd");
+    let string2 = "xyz";
+
+    let result = lifetimes::longest_with_an_announcement(string1.as_str(), string2, "Hello world!");
+    println!("The longest string is {}", result);
+
+
+
 }

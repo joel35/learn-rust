@@ -41,7 +41,7 @@ impl<T: Display + PartialOrd> Pair<T> {
         if self.x >= self.y {
             println!("The largest member is x = {}", self.x);
         } else {
-            println!("The largest member is y = {}", self y);
+            println!("The largest member is y = {}", self.y);
         }
     }
 }
